@@ -1,6 +1,5 @@
-from pyautogui import *
+from pyautogui import screenshot
 import pygetwindow as gw
-import pyautogui
 import time
 from termcolor import colored
 import keyboard
@@ -10,22 +9,22 @@ from pynput.mouse import Button, Controller
 mouse = Controller()
 time.sleep(0.5)
 
-putih = '\033[1;97m'
-merah = '\033[1;91m'
-hijau = '\033[1;92m'
-kuning = '\033[1m\033[93m'
-biru = '\033[1;94m'
-reset = '\033[0m'
-putihmerah = '\033[97m\033[41m'
-putihhijau = '\033[97m\033[42m'
-merahhijau = '\033[1;91m\033[42m'
+putih = r'\033[1;97m'
+merah = r'\033[1;91m'
+hijau = r'\033[1;92m'
+kuning = r'\033[1m\033[93m'
+biru = r'\033[1;94m'
+reset = r'\033[0m'
+putihmerah = r'\033[97m\033[41m'
+putihhijau = r'\033[97m\033[42m'
+merahhijau = r'\033[1;91m\033[42m'
 
 def anjaymabar():
     print(f"""{hijau}
   {hijau}|      |                         {kuning}  |             |   
-  {hijau}__ \   |  |   |  __ `__ \        {kuning}  __ \    _ \   __| 
+  {hijau}__ \\   |  |   |  __ `__ \\        {kuning}  __ \\    _ \\   __| 
   {hijau}|   |  |  |   |  |   |   | {merah}_____|{kuning}  |   |  (   |  |   
- {hijau}_.__/  _| \__,_| _|  _|  _|       {kuning} _.__/  \___/  \__| {reset}
+ {hijau}_.__/  _| \\__,_| _|  _|  _|       {kuning} _.__/  \\___/  \\__| {reset}
     """)
 
 anjaymabar()
@@ -43,22 +42,22 @@ while True:
         if language_choice in [1, 2]:
             break
         else:
-            print(f"{merah} Yo bro wrong choose. You can input {kuning}1 {merah}or {kuning}2{merah}.{reset}")
+            print(f"{merah} Yo bro wrong choice. You can input {kuning}1 {merah}or {kuning}2{merah}.{reset}")
     except ValueError:
-        print(f" {merah}What??? your input not valid. Please enter number {kuning}1 {merah}or {kuning}2 {merah}bro.{reset}")
+        print(f" {merah}What??? Your input is not valid. Please enter number {kuning}1 {merah}or {kuning}2 {merah}bro.{reset}")
 
 if language_choice == 1:
     window_input = f"\n{putih} [?] | Enter Window {hijau}(1 - TelegramDesktop){putih}: {reset}"
     window_not_found = f"{putih} [>] | Your Window - {{}} {kuning}not found!{reset}"
     window_found = f"{hijau} [>] | Window found - {{}}\n{hijau} Now bot working... {putih}Press {kuning}'K'{putih} on the keyboard to pause.{reset}"
     pause_message = f"{biru} Bot paused...\n{putih} Press {kuning}'K'{putih} again on the keyboard to continue{reset}"
-    continue_message = f"{biru} Bot continue working...{reset}"
+    continue_message = f"{biru} Bot continuing work...{reset}"
 elif language_choice == 2:
     window_input = f"\n{putih} [?] | Masukin Window nya {hijau}(1 - TelegramDesktop): {reset}"
-    window_not_found = f"{putih} [>] | Window - {{}} {kuning}gak di temukan!{reset}"
-    window_found = f"{hijau} [>] | Window ditemukan - {{}}\n{hijau} Sekarang bot berjalan... {putih}Pencet {kuning}'spasi' {putih}di keyboard buat jeda.{reset}"
-    pause_message = f"{biru} Bot terjeda... \n{putih}Pencet {kuning}'spasi'{putih} di keyboard buat lanjut lagi{reset}"
-    continue_message = f'{biru} Bot ngelanjutin proses...{reset}'
+    window_not_found = f"{putih} [>] | Window - {{}} {kuning}gak ditemukan!{reset}"
+    window_found = f"{hijau} [>] | Window ditemukan - {{}}\n{hijau} Sekarang bot berjalan... {putih}Pencet {kuning}'K'{putih} di keyboard buat jeda.{reset}"
+    pause_message = f"{biru} Bot terjeda... \n{putih}Pencet {kuning}'K'{putih} di keyboard buat lanjut lagi{reset}"
+    continue_message = f'{biru} Bot melanjutkan proses...{reset}'
 
 def click(x, y):
     mouse.position = (x, y + random.randint(1, 3))
@@ -69,8 +68,7 @@ window_name = input(window_input)
 
 if window_name == '1':
     window_name = "TelegramDesktop"
-
-if window_name == '2':
+elif window_name == '2':
     window_name = "KotatogramDesktop"
 
 check = gw.getWindowsWithTitle(window_name)
@@ -99,19 +97,17 @@ else:
             telegram_window.left, telegram_window.top, telegram_window.width, telegram_window.height
         )
 
-        if telegram_window != []:
+        if telegram_window:
             try:
                 telegram_window.activate()
             except:
                 telegram_window.minimize()
                 telegram_window.restore()
 
-        scrn = pyautogui.screenshot(region=(window_rect[0], window_rect[1], window_rect[2], window_rect[3]))
+        scrn = screenshot(region=(window_rect[0], window_rect[1], window_rect[2], window_rect[3]))
 
         width, height = scrn.size
         pixel_found = False
-        if pixel_found:
-            break
 
         for x in range(0, width, 20):
             for y in range(0, height, 20):
@@ -123,3 +119,5 @@ else:
                     time.sleep(0.001)
                     pixel_found = True
                     break
+            if pixel_found:
+                break
